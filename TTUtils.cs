@@ -9,6 +9,7 @@ namespace TootTallyTTCounter
 {
     public static class TTUtils
     {
+        //https://github.com/emmett-shark/HighscoreAccuracy/blob/6a8d8f25f77d906f2d5dff3a306def21146ba343/Utils.cs#L32
         public static int GetRealMax(float length, int noteIndex)
         {
             double champbonus = noteIndex > 23 ? 1.5 : 0;
