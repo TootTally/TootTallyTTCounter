@@ -52,23 +52,6 @@ namespace TootTallyTTCounter
                 UpdateTTText();
                 _updateTimer = 0;
             }
-            /*var step = (Math.Abs(_targetTT - _currentTT) / 8f) + .5f;
-            if (_currentTT < _targetTT)
-            {
-
-                _currentTT += step;
-                if (_currentTT > _targetTT)
-                    _currentTT = _targetTT;
-            }
-            else if (_currentTT > _targetTT)
-            {
-                _currentTT -= step;
-                if (_currentTT < _targetTT)
-                    _currentTT = _targetTT;
-            }
-            UpdateTTText();
-            _updateTimer = 0;
-        }*/
         }
 
         void OnDestroy()
