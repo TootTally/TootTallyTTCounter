@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using TMPro;
 using TootTallyCore.APIServices;
 using TootTallyCore.Utils.Helpers;
@@ -33,7 +36,6 @@ namespace TootTallyTTCounter
             var rect = _counterText.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(.08f, 0);
             rect.sizeDelta = Vector2.zero;
-            UpdateTTText();
         }
 
         void Update()
@@ -83,13 +85,12 @@ namespace TootTallyTTCounter
 
         private void UpdateTTText()
         {
-            if (_counterText == null) return;
-
-            var splitText = _currentTT.ToString("0.00").Split('.');
+            var wholeNumber = (int)_currentTT;
+            var decimalNumber = (_currentTT - (int)_currentTT).ToString("0.00", CultureInfo.InvariantCulture).Substring(2);
             _counterText.text =
-                    $"<mspace=mspace={CHAR_SPACING}>{splitText[0]}</mspace>" + //Int part of the number
+                    $"<mspace=mspace={CHAR_SPACING}>{wholeNumber}</mspace>" + //Int part of the number
                     $"." +
-                    $"<mspace=mspace={CHAR_SPACING}>{splitText[1]}</mspace>tt" + //Float part of the number, don't ask.
+                    $"<mspace=mspace={CHAR_SPACING}>{decimalNumber}</mspace>tt" + //Float part of the number, don't ask.
                     $"{(_isSongRated ? "" : "(Unrated) ")}";
         }
 
