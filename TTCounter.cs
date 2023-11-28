@@ -33,6 +33,7 @@ namespace TootTallyTTCounter
             var rect = _counterText.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(.08f, 0);
             rect.sizeDelta = Vector2.zero;
+            UpdateTTText();
         }
 
         void Update()
@@ -82,6 +83,8 @@ namespace TootTallyTTCounter
 
         private void UpdateTTText()
         {
+            if (_counterText == null) return;
+
             var splitText = _currentTT.ToString("0.00").Split('.');
             _counterText.text =
                     $"<mspace=mspace={CHAR_SPACING}>{splitText[0]}</mspace>" + //Int part of the number
