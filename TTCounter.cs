@@ -66,7 +66,9 @@ namespace TootTallyTTCounter
         private static float CalcBaseTTFromSongData(SerializableClass.SongDataFromDB songData)
         {
             var gameSpeed = ReplaySystemManager.gameSpeedMultiplier;
-            float diffIndex = (int)((gameSpeed - .5f) / .25f);
+            float diffIndex = Mathf.Clamp((int)((gameSpeed - .5f) / .25f),0,5);
+            
+
             float diffMin = diffIndex * .25f + .5f;
             float diffMax = diffMin + .25f;
 
