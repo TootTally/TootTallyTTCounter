@@ -29,9 +29,6 @@
 		<Reference Include="TootTallyCore">
 			<HintPath>$(TromboneTootDir)\BepInEx\plugins\TootTally-Core\TootTallyCore.dll</HintPath>
 		</Reference>
-		<Reference Include="HighscoreAccuracy">
-			<HintPath>$(TromboneTootDir)\BepInEx\plugins\emmett-HighscoreAccuracy\HighscoreAccuracy.dll</HintPath>
-		</Reference>
 		<Reference Include="TootTallyLeaderboard">
 			<HintPath>$(TromboneTootDir)\BepInEx\plugins\TootTally-Leaderboard\TootTallyLeaderboard.dll</HintPath>
 		</Reference>

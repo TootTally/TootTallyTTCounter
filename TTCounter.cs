@@ -1,10 +1,4 @@
-﻿using HighscoreAccuracy;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.PerformanceData;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TMPro;
 using TootTallyCore.APIServices;
 using TootTallyCore.Utils.Helpers;
@@ -39,7 +33,6 @@ namespace TootTallyTTCounter
             var rect = _counterText.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(.08f, 0);
             rect.sizeDelta = Vector2.zero;
-            PercentCounter.scoreChanged += OnScoreChanged;
         }
 
         void Update()
@@ -54,14 +47,9 @@ namespace TootTallyTTCounter
             }
         }
 
-        void OnDestroy()
-        {
-            PercentCounter.scoreChanged -= OnScoreChanged;
-        }
-
         public void OnScoreChanged(int totalScore, int noteIndex)
         {
-            _gameMaxScore += Utils.GetRealMax(levelData[noteIndex][1], noteIndex);
+            _gameMaxScore += TTUtils.GetRealMax(levelData[noteIndex][1], noteIndex);
             float percent = (float)totalScore / _gameMaxScore;
             _targetTT = TTUtils.CalculateScoreTT(_baseChartTT, percent);
             _timeSinceLastScore = 0;

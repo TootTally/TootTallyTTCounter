@@ -9,6 +9,15 @@ namespace TootTallyTTCounter
 {
     public static class TTUtils
     {
+        public static int GetRealMax(float length, int noteIndex)
+        {
+            double champbonus = noteIndex > 23 ? 1.5 : 0;
+            double realCoefficient = (Math.Min(noteIndex, 10) + champbonus) * 0.100000001490116 + 1.0;
+            length = GetLength(length);
+            return (int)(Mathf.Floor((float)((double)length * 10.0 * 100 * realCoefficient)) * 10f);
+        }
+        public static float GetLength(float length) => length <= 0f ? 0.015f : length;
+
         public static float FastPow(double num, int exp)
         {
             double result = 1.0;

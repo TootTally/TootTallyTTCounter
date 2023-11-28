@@ -15,7 +15,6 @@ namespace TootTallyTTCounter
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("TootTallyLeaderboard", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("com.hypersonicsharkz.highscoreaccuracy", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin, ITootTallyModule
     {
         public static Plugin Instance;
@@ -96,6 +95,14 @@ namespace TootTallyTTCounter
                 if (_songData != null && _songData.track_ref == GlobalVariables.chosen_track_data.trackref) return;
 
                 GetSongDataFromServer(songData => _songData = songData);
+            }
+
+            [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
+            [HarmonyPostfix]
+            public static void OnScoreAveragePostfix(int ___totalscore, int ___currentnoteindex)
+            {
+                if (_ttCounter != null)
+                    _ttCounter.OnScoreChanged(___totalscore, ___currentnoteindex);
             }
 
             public static void GetSongDataFromServer(Action<SerializableClass.SongDataFromDB> callback)
