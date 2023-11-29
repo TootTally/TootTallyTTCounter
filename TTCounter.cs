@@ -34,7 +34,8 @@ namespace TootTallyTTCounter
             _counterText.fontSize = 12;
             _counterText.alignment = TextAlignmentOptions.Left;
             var rect = _counterText.GetComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(.08f, 0);
+            rect.anchorMin = rect.anchorMax = new Vector2(.47f, .92f);
+            rect.anchoredPosition = new Vector2(-3, 0);
             rect.sizeDelta = Vector2.zero;
         }
 
@@ -86,7 +87,7 @@ namespace TootTallyTTCounter
         private void UpdateTTText()
         {
             var wholeNumber = (int)_currentTT;
-            var decimalNumber = (_currentTT - (int)_currentTT).ToString("0.00", CultureInfo.InvariantCulture).Substring(2);
+            var decimalNumber = (_currentTT - (int)_currentTT).ToString("0.00").Substring(2);
             _counterText.text =
                     $"<mspace=mspace={CHAR_SPACING}>{wholeNumber}</mspace>" + //Int part of the number
                     $"." +
