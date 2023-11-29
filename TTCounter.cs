@@ -32,10 +32,9 @@ namespace TootTallyTTCounter
             _counterText = gameObject.GetComponent<TMP_Text>();
             _counterText.enableWordWrapping = false;
             _counterText.fontSize = 12;
-            _counterText.alignment = TextAlignmentOptions.Left;
+            _counterText.alignment = TextAlignmentOptions.Center;
             var rect = _counterText.GetComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(.47f, .92f);
-            rect.anchoredPosition = new Vector2(-3, 0);
+            rect.anchorMin = rect.anchorMax = new Vector2(.5f, .92f);
             rect.sizeDelta = Vector2.zero;
         }
 
