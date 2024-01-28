@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Collections.Generic;
 using TMPro;
 using TootTallyCore.APIServices;
 using TootTallyCore.Utils.Helpers;
-using TootTallyLeaderboard.Replays;
+using TootTallyCore.Utils.TootTallyGlobals;
 using UnityEngine;
 
 namespace TootTallyTTCounter
@@ -40,8 +37,8 @@ namespace TootTallyTTCounter
 
         void Update()
         {
-            _updateTimer += Time.deltaTime;
-            _timeSinceLastScore += Time.deltaTime;
+            _updateTimer += Time.unscaledDeltaTime;
+            _timeSinceLastScore += Time.unscaledDeltaTime;
             if (_updateTimer > .06f && _currentTT != _targetTT)
             {
                 _currentTT = EaseTTValue(_currentTT, _targetTT - _currentTT, _timeSinceLastScore, 2f);
@@ -68,7 +65,7 @@ namespace TootTallyTTCounter
 
         private static float CalcBaseTTFromSongData(SerializableClass.SongDataFromDB songData)
         {
-            var gameSpeed = ReplaySystemManager.gameSpeedMultiplier;
+            var gameSpeed = TootTallyGlobalVariables.gameSpeedMultiplier;
             float diffIndex = Mathf.Clamp((int)((gameSpeed - .5f) / .25f),0,5);
             
 

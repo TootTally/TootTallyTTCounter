@@ -14,7 +14,7 @@ using UnityEngine;
 namespace TootTallyTTCounter
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("TootTallyLeaderboard", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("TootTallySettings", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin, ITootTallyModule
     {
         public static Plugin Instance;
