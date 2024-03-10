@@ -10,14 +10,14 @@ namespace TootTallyTTCounter
     public static class TTUtils
     {
         //https://github.com/emmett-shark/HighscoreAccuracy/blob/6a8d8f25f77d906f2d5dff3a306def21146ba343/Utils.cs#L32
-        public static int GetRealMax(float length, int noteIndex)
+        public static int GetRealMax(float length, int noteCount)
         {
-            double champbonus = noteIndex > 23 ? 1.5 : 0;
-            double realCoefficient = (Math.Min(noteIndex, 10) + champbonus) * 0.100000001490116 + 1.0;
+            double champbonus = noteCount > 23 ? 1.5 : 0;
+            double realCoefficient = (Math.Min(noteCount, 10) + champbonus) * 0.100000001490116 + 1.0;
             length = GetLength(length);
-            return (int)(Mathf.Floor((float)((double)length * 10.0 * 100 * realCoefficient)) * 10f);
+            return (int)(Mathf.Floor((float)((double)length * 100 * realCoefficient)) * 10f);
         }
-        public static float GetLength(float length) => length <= 0f ? 0.015f : length;
+        public static float GetLength(float length) => Mathf.Clamp(length, 0.2f, 5f) * 8f + 10f;
 
         public static float FastPow(double num, int exp)
         {

@@ -17,6 +17,7 @@ namespace TootTallyTTCounter
         private float _targetTT;
         private float _currentTT;
         private float _updateTimer;
+        private int _noteCount;
         private float _timeSinceLastScore;
 
         void Awake()
@@ -26,6 +27,7 @@ namespace TootTallyTTCounter
             _baseChartTT = 0;
             _targetTT = 0;
             _currentTT = 0;
+            _noteCount = 0;
             _counterText = gameObject.GetComponent<TMP_Text>();
             _counterText.enableWordWrapping = false;
             _counterText.fontSize = 12;
@@ -42,17 +44,21 @@ namespace TootTallyTTCounter
             if (_updateTimer > .06f && _currentTT != _targetTT)
             {
                 _currentTT = EaseTTValue(_currentTT, _targetTT - _currentTT, _timeSinceLastScore, 2f);
+                if (_currentTT < 0 || _targetTT < 0)
+                    _currentTT = _targetTT = 0;
+
                 UpdateTTText();
                 _updateTimer = 0;
             }
         }
 
-        public void OnScoreChanged(int totalScore, int noteIndex)
+        public void OnScoreChanged(int totalScore, float totalNoteLength)
         {
-            _gameMaxScore += TTUtils.GetRealMax(levelData[noteIndex][1], noteIndex);
+            _gameMaxScore += TTUtils.GetRealMax(totalNoteLength, _noteCount);
             float percent = (float)totalScore / _gameMaxScore;
             _targetTT = TTUtils.CalculateScoreTT(_baseChartTT, percent);
             _timeSinceLastScore = 0;
+            _noteCount++;
         }
 
         public void SetChartData(SerializableClass.SongDataFromDB songData)
@@ -66,8 +72,8 @@ namespace TootTallyTTCounter
         private static float CalcBaseTTFromSongData(SerializableClass.SongDataFromDB songData)
         {
             var gameSpeed = TootTallyGlobalVariables.gameSpeedMultiplier;
-            float diffIndex = Mathf.Clamp((int)((gameSpeed - .5f) / .25f),0,5);
-            
+            float diffIndex = Mathf.Clamp((int)((gameSpeed - .5f) / .25f), 0, 5);
+
 
             float diffMin = diffIndex * .25f + .5f;
             float diffMax = diffMin + .25f;

@@ -97,12 +97,20 @@ namespace TootTallyTTCounter
                 GetSongDataFromServer(songData => _songData = songData);
             }
 
+            private static float _totalNoteLength;
+
             [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
             [HarmonyPostfix]
-            public static void OnScoreAveragePostfix(int ___totalscore, int ___currentnoteindex)
+            public static void OnScoreAveragePrefix(GameController __instance)
             {
-                if (_ttCounter != null)
-                    _ttCounter.OnScoreChanged(___totalscore, ___currentnoteindex);
+                _totalNoteLength = __instance.total_length_of_active_notes;
+            }
+
+            [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
+            [HarmonyPostfix]
+            public static void OnScoreAveragePostfix(int ___totalscore)
+            {
+                _ttCounter?.OnScoreChanged(___totalscore, _totalNoteLength);
             }
 
             public static void GetSongDataFromServer(Action<SerializableClass.SongDataFromDB> callback)
