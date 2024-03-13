@@ -56,7 +56,7 @@ namespace TootTallyTTCounter
         {
             _gameMaxScore += TTUtils.GetRealMax(totalNoteLength, _noteCount);
             float percent = (float)totalScore / _gameMaxScore;
-            _targetTT = TTUtils.CalculateScoreTT(_baseChartTT, percent);
+            _targetTT = TTUtils.CalculateScoreTT(_baseChartTT * Mathf.Sqrt(percent), percent); //Estimate of custom curve
             _timeSinceLastScore = 0;
             _noteCount++;
         }

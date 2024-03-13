@@ -39,12 +39,13 @@ namespace TootTallyTTCounter
 
         public static float CalculateScoreTT(float baseTT, float percent)
         {
-            if (percent < 0.6f)
-                return 21.433f * FastPow(percent, 6) * baseTT;
-            else if (percent < 0.98f)
-                return ((0.028091281f * (float)Math.Pow(Math.E, 6f * percent)) - 0.028091281f) * baseTT;
+            if (percent < 0.98f)
+                return ((c * (float)Math.Pow(Math.E, b * percent)) - c) * baseTT;
             else
                 return FastPow(9.2f * percent - 7.43037117f, 5) * baseTT;
         }
+
+        public const float c = 0.028091281f;
+        public const float b = 6f;
     }
 }

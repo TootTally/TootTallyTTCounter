@@ -100,7 +100,7 @@ namespace TootTallyTTCounter
             private static float _totalNoteLength;
 
             [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
-            [HarmonyPostfix]
+            [HarmonyPrefix]
             public static void OnScoreAveragePrefix(GameController __instance)
             {
                 _totalNoteLength = __instance.total_length_of_active_notes;
