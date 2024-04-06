@@ -4,7 +4,7 @@
 		<TargetFramework>net48</TargetFramework>
 		<AssemblyName>TootTallyTTCounter</AssemblyName>
 		<Description>TT Counter display while you are playing</Description>
-		<Version>1.0.1</Version>
+		<Version>1.1.0</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<TromboneChampDir>E:\SteamLibrary\steamapps\common\TromboneChamp</TromboneChampDir>
@@ -31,6 +31,12 @@
 		</Reference>
 		<Reference Include="TootTallySettings">
 			<HintPath>$(TromboneTootDir)\BepInEx\plugins\TootTally-TootTallySettings\TootTallySettings.dll</HintPath>
+		</Reference>
+		<Reference Include="TootTallyDiffCalcLibs">
+			<HintPath>$(TromboneTootDir)\BepInEx\plugins\TootTally-TootTallyDiffCalcLibs\TootTallyDiffCalcLibs.dll</HintPath>
+		</Reference>
+		<Reference Include="TootTallyGameModifiers">
+			<HintPath>$(TromboneTootDir)\BepInEx\plugins\TootTally-TootTallyGameModifiers\TootTallyGameModifiers.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

@@ -1,33 +1,31 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using TootTallyCore.APIServices;
-using TootTallyCore.Utils.Helpers;
 using TootTallyCore.Utils.TootTallyGlobals;
+using TootTallyDiffCalcLibs;
+using TootTallyGameModifiers;
 using UnityEngine;
 
 namespace TootTallyTTCounter
 {
     public class TTCounter : MonoBehaviour
     {
-        private int _gameMaxScore;
         private TMP_Text _counterText;
         private bool _isSongRated;
-        private float _baseChartTT;
         public List<float[]> levelData;
+        private Chart _chart;
+        public string[] modifiers;
         private float _targetTT;
         private float _currentTT;
         private float _updateTimer;
-        private int _noteCount;
         private float _timeSinceLastScore;
 
         void Awake()
         {
             _isSongRated = false;
-            _gameMaxScore = 0;
-            _baseChartTT = 0;
+            modifiers = null;
             _targetTT = 0;
             _currentTT = 0;
-            _noteCount = 0;
             _counterText = gameObject.GetComponent<TMP_Text>();
             _counterText.enableWordWrapping = false;
             _counterText.fontSize = 12;
@@ -46,42 +44,29 @@ namespace TootTallyTTCounter
                 _currentTT = EaseTTValue(_currentTT, _targetTT - _currentTT, _timeSinceLastScore, 2f);
                 if (_currentTT < 0 || _targetTT < 0)
                     _currentTT = _targetTT = 0;
-
                 UpdateTTText();
                 _updateTimer = 0;
             }
         }
 
-        public void OnScoreChanged(int totalScore, float totalNoteLength)
+        public void OnScoreChanged(int totalScore, int noteIndex)
         {
-            _gameMaxScore += TTUtils.GetRealMax(totalNoteLength, _noteCount);
-            float percent = (float)totalScore / _gameMaxScore;
-            _targetTT = TTUtils.CalculateScoreTT(_baseChartTT * Mathf.Sqrt(percent), percent); //Estimate of custom curve
+            if (_chart.trackRef == "" || _chart.indexToMaxScoreDict == null || !_chart.indexToMaxScoreDict.ContainsKey(noteIndex)) return;
+            float percent = totalScore / (float)_chart.indexToMaxScoreDict[noteIndex];
+            _targetTT = Utils.CalculateScoreTT(_chart, TootTallyGlobalVariables.gameSpeedMultiplier, percent, modifiers); //Estimate of custom curve
             _timeSinceLastScore = 0;
-            _noteCount++;
         }
 
-        public void SetChartData(SerializableClass.SongDataFromDB songData)
+        public void SetChartData(Chart chart, SerializableClass.SongDataFromDB songData = null)
         {
-            _isSongRated = songData.is_rated;
-            _baseChartTT = CalcBaseTTFromSongData(songData);
-            _targetTT = _currentTT = TTUtils.CalculateScoreTT(_baseChartTT, 1);
+            if (chart.trackRef == "") return;
+            _isSongRated = songData != null && songData.is_rated;
+            _chart = chart;
+            var modifiersString = GameModifierManager.GetModifiersString();
+            if (modifiersString != "None")
+                modifiers = modifiersString.Split(',');
+            _targetTT = _currentTT = Utils.CalculateScoreTT(chart, TootTallyGlobalVariables.gameSpeedMultiplier, 1, modifiers);
             UpdateTTText();
-        }
-
-        private static float CalcBaseTTFromSongData(SerializableClass.SongDataFromDB songData)
-        {
-            var gameSpeed = TootTallyGlobalVariables.gameSpeedMultiplier;
-            float diffIndex = Mathf.Clamp((int)((gameSpeed - .5f) / .25f), 0, 5);
-
-
-            float diffMin = diffIndex * .25f + .5f;
-            float diffMax = diffMin + .25f;
-
-            float by = (gameSpeed - diffMin) / (diffMax - diffMin);
-
-            float diff = EasingHelper.Lerp(songData.speed_diffs[(int)diffIndex], songData.speed_diffs[(int)diffIndex + 1], by);
-            return TTUtils.CalculateBaseTT(diff);
         }
 
         private readonly float CHAR_SPACING = 7.2f;

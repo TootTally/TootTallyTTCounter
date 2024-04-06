@@ -4,10 +4,12 @@ using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using System;
+using System.IO;
 using TootTallyCore.APIServices;
 using TootTallyCore.Graphics;
 using TootTallyCore.Utils.Helpers;
 using TootTallyCore.Utils.TootTallyModules;
+using TootTallyDiffCalcLibs;
 using TrombLoader.CustomTracks;
 using UnityEngine;
 
@@ -15,6 +17,7 @@ namespace TootTallyTTCounter
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("TootTallySettings", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("TootTallyDiffCalcLibs", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin, ITootTallyModule
     {
         public static Plugin Instance;
@@ -76,15 +79,15 @@ namespace TootTallyTTCounter
 
                 if (_songData != null && _songData.track_ref == GlobalVariables.chosen_track_data.trackref)
                 {
-                    _ttCounter.SetChartData(_songData);
+                    _ttCounter.SetChartData(DiffCalcGlobals.selectedChart, _songData);
                     return;
                 }
 
                 GetSongDataFromServer(songData =>
                 {
                     _songData = songData;
-                    if (songData != null)
-                        _ttCounter.SetChartData(_songData);
+                    if (DiffCalcGlobals.selectedChart.trackRef != "")
+                        _ttCounter.SetChartData(DiffCalcGlobals.selectedChart, _songData);
                 });
             }
 
@@ -97,20 +100,12 @@ namespace TootTallyTTCounter
                 GetSongDataFromServer(songData => _songData = songData);
             }
 
-            private static float _totalNoteLength;
-
-            [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
-            [HarmonyPrefix]
-            public static void OnScoreAveragePrefix(GameController __instance)
-            {
-                _totalNoteLength = __instance.total_length_of_active_notes;
-            }
 
             [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
             [HarmonyPostfix]
-            public static void OnScoreAveragePostfix(int ___totalscore)
+            public static void OnScoreAveragePostfix(int ___totalscore, int ___currentnoteindex)
             {
-                _ttCounter?.OnScoreChanged(___totalscore, _totalNoteLength);
+                _ttCounter?.OnScoreChanged(___totalscore, ___currentnoteindex);
             }
 
             public static void GetSongDataFromServer(Action<SerializableClass.SongDataFromDB> callback)
