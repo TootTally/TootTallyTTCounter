@@ -115,7 +115,7 @@ namespace TootTallyTTCounter
 
                 Plugin.Instance.StartCoroutine(TootTallyAPIService.GetHashInDB(songHash, track is CustomTrack, songHashInDB =>
                 {
-                    if (songHashInDB == 0) return;
+                    if (songHashInDB == 0) callback(null);
 
                     Plugin.Instance.StartCoroutine(TootTallyAPIService.GetSongDataFromDB(songHashInDB, callback));
                 }));
