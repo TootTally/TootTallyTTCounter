@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using TootTallyCore.APIServices;
 using TootTallyCore.Utils.TootTallyGlobals;
@@ -49,11 +50,11 @@ namespace TootTallyTTCounter
             }
         }
 
-        public void OnScoreChanged(int totalScore, int noteIndex)
+        public void OnScoreChanged(int totalScore, int hitCount, int noteIndex)
         {
             if (_chart.trackRef == "" || _chart.indexToMaxScoreDict == null || !_chart.indexToMaxScoreDict.ContainsKey(noteIndex)) return;
             float percent = totalScore / (float)_chart.indexToMaxScoreDict[noteIndex];
-            _targetTT = Utils.CalculateScoreTT(_chart, TootTallyGlobalVariables.gameSpeedMultiplier, percent, modifiers); //Estimate of custom curve
+            _targetTT = Utils.CalculateScoreTT(_chart, TootTallyGlobalVariables.gameSpeedMultiplier, hitCount, _chart.indexToNoteCountDict[noteIndex] , percent, modifiers); //Estimate of custom curve
             _timeSinceLastScore = 0;
         }
 
@@ -65,7 +66,7 @@ namespace TootTallyTTCounter
             var modifiersString = GameModifierManager.GetModifiersString();
             if (modifiersString != "None")
                 modifiers = modifiersString.Split(',');
-            _targetTT = _currentTT = Utils.CalculateScoreTT(chart, TootTallyGlobalVariables.gameSpeedMultiplier, 1, modifiers);
+            _targetTT = _currentTT = Utils.CalculateScoreTT(chart, TootTallyGlobalVariables.gameSpeedMultiplier, 1, 1, 1, modifiers);
             UpdateTTText();
         }
 

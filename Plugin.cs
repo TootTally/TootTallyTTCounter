@@ -103,9 +103,9 @@ namespace TootTallyTTCounter
 
             [HarmonyPatch(typeof(GameController), nameof(GameController.getScoreAverage))]
             [HarmonyPostfix]
-            public static void OnScoreAveragePostfix(int ___totalscore, int ___currentnoteindex)
+            public static void OnScoreAveragePostfix(int ___totalscore, int ___scores_A, int ___scores_B, int ___currentnoteindex)
             {
-                _ttCounter?.OnScoreChanged(___totalscore, ___currentnoteindex);
+                _ttCounter?.OnScoreChanged(___totalscore, ___scores_A + ___scores_B, ___currentnoteindex);
             }
 
             public static void GetSongDataFromServer(Action<SerializableClass.SongDataFromDB> callback)
