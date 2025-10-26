@@ -8,6 +8,7 @@ using System.IO;
 using TootTallyCore.APIServices;
 using TootTallyCore.Graphics;
 using TootTallyCore.Utils.Helpers;
+using TootTallyCore.Utils.TootTallyGlobals;
 using TootTallyCore.Utils.TootTallyModules;
 using TootTallyDiffCalcLibs;
 using TrombLoader.CustomTracks;
@@ -73,6 +74,8 @@ namespace TootTallyTTCounter
             [HarmonyPostfix]
             public static void OnGameControllerStartPostfix(GameController __instance)
             {
+                if (TootTallyGlobalVariables.isTournamentHosting) return;
+
                 var counterText = GameObjectFactory.CreateSingleText(__instance.ui_score_shadow.transform.parent.parent, "TTCounter", "0.00tt", Color.white);
                 _ttCounter = counterText.gameObject.AddComponent<TTCounter>();
                 _ttCounter.levelData = __instance.leveldata;
