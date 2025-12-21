@@ -1,0 +1,13 @@
+{
+    "name": "TootTallyTTCounter",
+    "version_number": "1.1.3",
+    "website_url": "https://github.com/TootTally/TootTallyCore",
+    "description": "Add live TT values while playing a song",
+    "dependencies": [
+        "TootTally-TootTallyDiffCalcLibs-1.0.5",
+        "TootTally-TootTallyCore-1.3.6",
+        "TromboneChamps-TrombLoader-2.4.3",
+        "TromboneChamps-BaboonAPI-2.9.0",
+        "BepInEx-BepInExPack_TromboneChamp-5.4.21"
+    ]
+}

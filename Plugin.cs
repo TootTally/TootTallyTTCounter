@@ -74,7 +74,7 @@ namespace TootTallyTTCounter
             [HarmonyPostfix]
             public static void OnGameControllerStartPostfix(GameController __instance)
             {
-                if (TootTallyGlobalVariables.isTournamentHosting) return;
+                if (TootTallyGlobalVariables.isTournamentHosting || __instance.freeplay) return;
 
                 var counterText = GameObjectFactory.CreateSingleText(__instance.ui_score_shadow.transform.parent.parent, "TTCounter", "0.00tt", Color.white);
                 _ttCounter = counterText.gameObject.AddComponent<TTCounter>();
