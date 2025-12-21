@@ -4,7 +4,7 @@
 		<TargetFramework>net48</TargetFramework>
 		<AssemblyName>TootTallyTTCounter</AssemblyName>
 		<Description>TT Counter display while you are playing</Description>
-		<Version>1.1.2</Version>
+		<Version>1.1.3</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<TromboneChampDir>E:\SteamLibrary\steamapps\common\TromboneChamp</TromboneChampDir>
@@ -43,4 +43,14 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TromboneTootDir)\BepInEx\plugins\TootTally-TootTallyTTCounter" />
 	</Target>
+
+  <Target Name="ThunderstoreZip" AfterTargets="Build">
+    <Delete Files="$(OutDir)thunderstore" />
+    <Delete Files="$(SolutionDir)$(ProjectName).zip" />
+    <Copy SourceFiles="thunderstore\icon.png" DestinationFolder="$(OutDir)thunderstore" />
+    <Copy SourceFiles="thunderstore\manifest.json" DestinationFolder="$(OutDir)thunderstore" />
+    <Copy SourceFiles="README.md" DestinationFolder="$(OutDir)thunderstore" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(OutDir)thunderstore/plugins" />
+    <ZipDirectory DestinationFile="$(SolutionDir)$(ProjectName).zip" SourceDirectory="$(OutDir)thunderstore" />
+  </Target>
 </Project>
