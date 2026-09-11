@@ -108,6 +108,8 @@ namespace TootTallyTTCounter
             [HarmonyPostfix]
             public static void OnScoreAveragePostfix(int ___totalscore, int ___scores_A, int ___scores_B, int ___currentnoteindex)
             {
+                if (_songData != null && _songData.track_ref != GlobalVariables.chosen_track_data.trackref) _ttCounter.SetChartData(DiffCalcGlobals.selectedChart, _songData);
+
                 _ttCounter?.OnScoreChanged(___totalscore, ___scores_A + ___scores_B, ___currentnoteindex);
             }
 
